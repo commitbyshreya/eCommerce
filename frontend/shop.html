@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolKart Shop | Power Tools & Hardware</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search tools" data-search-input />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container shop-layout">
+        <aside class="filters">
+          <div class="filter-group">
+            <h4>Categories</h4>
+            <div class="filter-list" data-filter-list="category"></div>
+          </div>
+          <div class="filter-group">
+            <h4>Brands</h4>
+            <div class="filter-list" data-filter-list="brand"></div>
+          </div>
+          <div class="filter-group">
+            <h4>Price Range</h4>
+            <div class="price-range">
+              <span>$0</span>
+              <input type="range" min="0" max="500" value="250" data-price-range />
+              <span>$500</span>
+            </div>
+            <p class="text-muted">Up to $<span data-price-value>250</span></p>
+          </div>
+          <div class="filter-group">
+            <h4>Ratings</h4>
+            <div class="filter-list" data-filter-list="rating">
+              <label>
+                <input type="radio" name="rating" value="4" /> 4★ & above
+              </label>
+              <label>
+                <input type="radio" name="rating" value="3" /> 3★ & above
+              </label>
+              <label>
+                <input type="radio" name="rating" value="0" checked /> Any rating
+              </label>
+            </div>
+          </div>
+          <div class="filter-group">
+            <h4>Availability</h4>
+            <label class="filter-list">
+              <input type="checkbox" data-availability /> In stock
+            </label>
+          </div>
+          <button class="btn btn--primary" data-apply-filters>Apply Filters</button>
+        </aside>
+
+        <section>
+          <header class="shop-toolbar">
+            <div>
+              Showing <strong data-total-results>0</strong> results
+            </div>
+            <div class="flex">
+              <select data-sort-select>
+                <option value="popular">Sort by: Popular</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="newest">Newest</option>
+              </select>
+              <select data-limit-select>
+                <option value="8">8 per page</option>
+                <option value="12" selected>12 per page</option>
+                <option value="16">16 per page</option>
+              </select>
+            </div>
+          </header>
+
+          <div class="product-grid" data-shop-grid></div>
+
+          <div class="pagination" data-pagination></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__columns">
+          <div>
+            <div class="nav__brand">
+              <span class="nav__brand-icon">🛠️</span>
+              ToolKart
+            </div>
+            <p>Bulk discounts available for contractors and enterprises.</p>
+          </div>
+          <div>
+            <p class="footer__title">Quick Links</p>
+            <ul class="footer__list">
+              <li><a href="./shop.html">Shop</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="./cart.html">Cart</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Customer Service</p>
+            <ul class="footer__list">
+              <li><a href="#">Order Tracking</a></li>
+              <li><a href="#">Return Policy</a></li>
+              <li><a href="#">Financing</a></li>
+              <li><a href="#">Installation</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Stay Connected</p>
+            <ul class="footer__list">
+              <li>newsletter@toolkart.com</li>
+              <li>+1 (234) 567-890</li>
+              <li>Mon - Sat: 8am - 6pm</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__bottom">© ToolKart 2025. Built for professionals.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/shop.js"></script>
+  </body>
+</html>

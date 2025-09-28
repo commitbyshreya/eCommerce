@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolKart | Quality Tools & Hardware</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search tools" />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+        <section class="hero">
+          <div class="hero__content">
+            <span class="hero__badge">Premium power tools with flat 20% OFF</span>
+            <h1 class="hero__title">Build faster with ToolKart’s trusted hardware</h1>
+            <p>
+              Discover the latest power tools, safety gear, and accessories crafted for
+              professionals and DIY enthusiasts alike.
+            </p>
+            <div class="hero__cta">
+              <a class="btn btn--primary" href="./shop.html">Shop Now</a>
+              <a class="btn btn--ghost" href="./about.html">Learn More</a>
+            </div>
+          </div>
+          <div class="card card--soft">
+            <h3>Deals of the Week</h3>
+            <p>Combo kits and safety gear bundles now 15% off for members.</p>
+            <a class="btn" href="./login.html">Unlock Deals</a>
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <div class="section__heading">
+            <h2 class="section__title">Shop by Category</h2>
+            <a class="text-muted" href="./shop.html">Browse all</a>
+          </div>
+          <div class="categories" data-category-grid></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section__heading">
+            <h2 class="section__title">Featured Tools</h2>
+            <span class="badge">Top rated</span>
+          </div>
+          <div class="product-grid" data-featured-grid></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="deals-bar">
+            <div>
+              <strong>Deals of the Day</strong>
+              <p class="text-muted">Limited time discounts on pro kits and accessories.</p>
+            </div>
+            <a class="btn btn--primary" href="./shop.html">View Deals</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__columns">
+          <div>
+            <div class="nav__brand">
+              <span class="nav__brand-icon">🛠️</span>
+              ToolKart
+            </div>
+            <p>Your trusted partner for premium tools & hardware nationwide.</p>
+          </div>
+          <div>
+            <p class="footer__title">Quick Links</p>
+            <ul class="footer__list">
+              <li><a href="./shop.html">Shop</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="./admin.html">Admin Panel</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Customer Service</p>
+            <ul class="footer__list">
+              <li><a href="#">Shipping & Delivery</a></li>
+              <li><a href="#">Returns & Exchanges</a></li>
+              <li><a href="#">Warranty</a></li>
+              <li><a href="#">FAQs</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Contact Info</p>
+            <ul class="footer__list">
+              <li>1234 Main Street, Springfield, USA</li>
+              <li>support@toolkart.com</li>
+              <li>(123) 456-7890</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__bottom">© ToolKart 2025. Crafted for the modern builder.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/home.js"></script>
+  </body>
+</html>

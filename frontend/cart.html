@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart | ToolKart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search tools" />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+        <div class="about-hero">
+          <h1>Cart</h1>
+          <p>Review your order before checkout.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container cart-wrapper">
+        <section>
+          <div class="cart-items" data-cart-items></div>
+        </section>
+        <aside class="order-summary">
+          <h2>Order Summary</h2>
+          <div class="order-summary__row">
+            <span>Subtotal</span>
+            <strong>$<span data-subtotal>0.00</span></strong>
+          </div>
+          <div class="order-summary__row">
+            <span>Shipping</span>
+            <strong>$<span data-shipping>0.00</span></strong>
+          </div>
+          <div class="order-summary__row">
+            <span>Tax</span>
+            <strong>$<span data-tax>0.00</span></strong>
+          </div>
+          <div class="order-summary__row order-summary__row--total">
+            <span>Total</span>
+            <strong>$<span data-total>0.00</span></strong>
+          </div>
+          <button class="btn btn--primary" data-checkout>Checkout</button>
+          <p class="text-muted" data-cart-status></p>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__columns">
+          <div>
+            <div class="nav__brand">
+              <span class="nav__brand-icon">🛠️</span>
+              ToolKart
+            </div>
+            <p>Need help? Chat with our tool specialists 7 days a week.</p>
+          </div>
+          <div>
+            <p class="footer__title">Quick Links</p>
+            <ul class="footer__list">
+              <li><a href="./shop.html">Shop</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="./cart.html">Cart</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Support</p>
+            <ul class="footer__list">
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Warranty</a></li>
+              <li><a href="#">Corporate Sales</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Contact Info</p>
+            <ul class="footer__list">
+              <li>support@toolkart.com</li>
+              <li>(123) 456-7890</li>
+              <li>Mon - Sat: 8am - 6pm</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__bottom">© ToolKart 2025. Tools that work as hard as you do.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/cart.js"></script>
+  </body>
+</html>

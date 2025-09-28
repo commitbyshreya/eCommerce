@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolKart Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search tools" />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-page">
+      <section class="auth-card" data-auth-card>
+        <div data-view="login">
+          <h1>Login</h1>
+          <form data-login-form>
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button class="btn btn--primary" type="submit">Log In</button>
+            <div class="auth-links">
+              <a href="#">Forgot password?</a>
+              <a href="#" data-switch="register">Sign up</a>
+            </div>
+            <p class="text-muted" data-auth-status></p>
+          </form>
+        </div>
+
+        <div class="hidden" data-view="register">
+          <h1>Create Account</h1>
+          <form data-register-form>
+            <input type="text" name="name" placeholder="Full name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button class="btn btn--primary" type="submit">Sign Up</button>
+            <div class="auth-links">
+              <span></span>
+              <a href="#" data-switch="login">Back to login</a>
+            </div>
+            <p class="text-muted" data-auth-status></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__columns">
+          <div>
+            <div class="nav__brand">
+              <span class="nav__brand-icon">🛠️</span>
+              ToolKart
+            </div>
+            <p>Log in to access exclusive deals and manage orders.</p>
+          </div>
+          <div>
+            <p class="footer__title">Quick Links</p>
+            <ul class="footer__list">
+              <li><a href="./shop.html">Shop</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="./admin.html">Admin Panel</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Support</p>
+            <ul class="footer__list">
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Account Help</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Contact Info</p>
+            <ul class="footer__list">
+              <li>support@toolkart.com</li>
+              <li>(123) 456-7890</li>
+              <li>Mon - Sat: 8am - 6pm</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__bottom">© ToolKart 2025. Secure access for every customer.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/auth.js"></script>
+  </body>
+</html>

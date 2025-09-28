@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolKart Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search admin" />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar__brand">
+          <span class="nav__brand-icon">🛠️</span>
+          Shopkeeper Panel
+        </div>
+        <nav class="admin-nav">
+          <a href="#" class="active">Dashboard</a>
+          <a href="#">Profile</a>
+          <a href="#">Products</a>
+          <a href="#">Orders</a>
+          <a href="#">Customers</a>
+          <a href="#">Payments</a>
+          <a href="#">Settings</a>
+          <a href="./login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <section class="admin-content">
+        <header>
+          <h1>Dashboard</h1>
+          <p class="text-muted">Welcome back, Shopkeeper. Here’s what’s happening today.</p>
+        </header>
+
+        <div class="dashboard-cards" data-dashboard-cards>
+          <article class="dashboard-card">
+            <span>Total Sales</span>
+            <span class="dashboard-card__value">$0</span>
+          </article>
+          <article class="dashboard-card">
+            <span>Orders Today</span>
+            <span class="dashboard-card__value">0</span>
+          </article>
+          <article class="dashboard-card">
+            <span>Pending Orders</span>
+            <span class="dashboard-card__value">0</span>
+          </article>
+          <article class="dashboard-card">
+            <span>Stock Alerts</span>
+            <span class="dashboard-card__value">0</span>
+          </article>
+        </div>
+
+        <div class="chart-card">
+          <h2>Sales Trends</h2>
+          <canvas id="salesChart" height="220"></canvas>
+        </div>
+
+        <section class="card">
+          <header class="section__heading">
+            <div>
+              <h2 class="section__title">Products Management</h2>
+              <p class="text-muted">Quick actions on your top catalogue items.</p>
+            </div>
+            <button class="btn btn--primary" data-add-product>Add New Product</button>
+          </header>
+          <div class="nav__search" style="max-width: 280px; margin-bottom: 1rem;">
+            <input type="search" placeholder="Search products" data-product-search />
+            <span class="nav__search-icon">🔍</span>
+          </div>
+          <div class="table-wrapper">
+            <table class="table" data-products-table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="footer__bottom">© ToolKart Shopkeeper Panel 2025</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/admin.js"></script>
+  </body>
+</html>

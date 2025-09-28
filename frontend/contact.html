@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact ToolKart | Customer Support</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <a class="nav__brand" href="./index.html">
+            <span class="nav__brand-icon">🛠️</span>
+            ToolKart
+          </a>
+          <ul class="nav__links">
+            <li><a data-nav-link href="./index.html">Home</a></li>
+            <li><a data-nav-link href="./shop.html">Shop</a></li>
+            <li><a data-nav-link href="./about.html">About</a></li>
+            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <div class="nav__search">
+              <input type="search" placeholder="Search tools" />
+              <span class="nav__search-icon">🔍</span>
+            </div>
+            <a class="icon-button" href="./cart.html">
+              🛒
+              <span class="badge" data-cart-count>0</span>
+            </a>
+            <a class="icon-button" href="./login.html">👤</a>
+          </div>
+        </nav>
+        <div class="about-hero">
+          <h1>Contact</h1>
+          <p>Get in touch with us for product inquiries or support.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container contact-grid">
+        <section class="contact-form">
+          <h2>Send a Message</h2>
+          <form data-contact-form>
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="tel" name="phone" placeholder="Phone (optional)" />
+            <textarea name="message" placeholder="How can we help?" required></textarea>
+            <button class="btn btn--primary" type="submit">Send Message</button>
+            <p class="text-muted" data-contact-status></p>
+          </form>
+        </section>
+        <section class="contact-info">
+          <h2>Contact Information</h2>
+          <ul class="footer__list">
+            <li>📍 1234 Main Street, Springfield, USA</li>
+            <li>✉️ support@toolkart.com</li>
+            <li>📞 +1 (234) 567-890</li>
+            <li>⏰ Mon - Sat: 8am - 6pm</li>
+          </ul>
+          <div class="grid" style="margin-top: 2rem;">
+            <div>
+              <p class="footer__title">Customer Service</p>
+              <ul class="footer__list">
+                <li><a href="#">Shipping</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Warranty</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title">Follow Us</p>
+              <ul class="footer__list">
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__columns">
+          <div>
+            <div class="nav__brand">
+              <span class="nav__brand-icon">🛠️</span>
+              ToolKart
+            </div>
+            <p>Your trusted source for tools, safety gear, and more.</p>
+          </div>
+          <div>
+            <p class="footer__title">Quick Links</p>
+            <ul class="footer__list">
+              <li><a href="./shop.html">Shop</a></li>
+              <li><a href="./about.html">About</a></li>
+              <li><a href="./contact.html">Contact</a></li>
+              <li><a href="./cart.html">Cart</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Support</p>
+            <ul class="footer__list">
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Order Tracking</a></li>
+              <li><a href="#">Corporate Sales</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer__title">Visit Us</p>
+            <ul class="footer__list">
+              <li>1234 Main Street, Springfield</li>
+              <li>support@toolkart.com</li>
+              <li>(123) 456-7890</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__bottom">© ToolKart 2025. We equip your next project.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/contact.js"></script>
+  </body>
+</html>
