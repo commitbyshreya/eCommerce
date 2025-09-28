@@ -9,8 +9,21 @@ import { config } from './config/env.js';
 
 const app = express();
 
-const allowed = [config.clientUrl, /\.vercel\.app$/]; // allow previews too
-app.use(cors({ origin: allowed, credentials: true }));
+const allowedOrigins = [...config.clientUrls, /\.vercel\.app$/];
+
+app.use(cors({
+  origin(origin, callback) {
+    // allow same-origin / server-to-server / tools
+    if (!origin) return callback(null, true);
+
+    const ok = allowedOrigins.some((allowed) =>
+      allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
+    );
+
+    return ok ? callback(null, true) : callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(morgan('dev'));

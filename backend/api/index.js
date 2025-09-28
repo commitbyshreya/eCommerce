@@ -1,29 +1,26 @@
+// backend/api/index.js
 import serverless from 'serverless-http';
-import app from '../src/app.js';
-import { connectDatabase } from '../src/config/db.js';
+import app from '../app.js';
+import { connectDatabase } from '../config/db.js';
 
-let handler;
-let dbPromise;
-
-async function ensureBootstrap() {
-  if (!dbPromise) {
-    dbPromise = connectDatabase().catch((error) => {
-      console.warn('Vercel bootstrap DB connection failed:', error.message);
+// Reuse DB connection across invocations (good for serverless)
+let dbReady;
+async function ensureDb() {
+  if (!dbReady) {
+    dbReady = connectDatabase().catch(err => {
+      dbReady = null; // allow retry on next invocation
+      throw err;
     });
   }
-  if (!handler) {
-    handler = serverless(app);
-  }
-  await dbPromise;
-}
-
-export default async function vercelHandler(req, res) {
-  await ensureBootstrap();
-  return handler(req, res);
+  return dbReady;
 }
 
 export const config = {
-  api: {
-    bodyParser: false
-  }
+  runtime: 'nodejs20.x' // or nodejs18.x; being explicit helps
 };
+
+export default async function handler(req, res) {
+  await ensureDb();
+  const wrapped = serverless(app);
+  return wrapped(req, res);
+}
