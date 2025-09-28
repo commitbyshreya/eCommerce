@@ -2,9 +2,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const DEFAULT_CLIENT_URLS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://e-commerce-join.vercel.app',
+  'https://e-commerce-ivory-psi.vercel.app'
+];
+
 const clientUrls = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',').map((value) => value.trim()).filter(Boolean)
-  : ['http://localhost:5173', 'http://localhost:3000'];
+  : DEFAULT_CLIENT_URLS;
 
 export const config = {
   port: process.env.PORT || 3000,
