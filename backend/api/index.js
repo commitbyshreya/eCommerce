@@ -8,19 +8,27 @@ let dbReady;
 async function ensureDb() {
   if (!dbReady) {
     dbReady = connectDatabase().catch(err => {
+      console.error('Database connection failed:', err.message);
       dbReady = null; // allow retry on next invocation
-      throw err;
+      // Don't throw, let the app run without DB for demo mode
     });
   }
   return dbReady;
 }
 
-export const config = {
-  runtime: 'nodejs20.x' // or nodejs18.x; being explicit helps
-};
-
 export default async function handler(req, res) {
-  await ensureDb();
-  const wrapped = serverless(app);
-  return wrapped(req, res);
+  try {
+    // Ensure database connection (non-blocking)
+    await ensureDb();
+    
+    // Wrap the Express app with serverless-http
+    const wrapped = serverless(app);
+    return await wrapped(req, res);
+  } catch (error) {
+    console.error('Handler error:', error);
+    return res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message 
+    });
+  }
 }
