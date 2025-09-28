@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { User } from '../models/User.js';
 import { config } from '../config/env.js';
+import { ensureDatabaseConnection } from '../config/db.js';
 import {
   addDemoUser,
   demoStore,
@@ -22,10 +23,17 @@ export async function register(req, res) {
     return res.status(400).json({ message: 'Email and password are required' });
   }
 
+  if (password.length < 6) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+  }
+
   const safeEmail = email.toLowerCase();
+  const preferDatabase = Boolean(config.mongoUri);
 
   try {
-    if (isDatabaseConnected()) {
+    const dbReady = await ensureDatabaseConnection();
+
+    if (dbReady) {
       const existing = await User.findOne({ email: safeEmail });
       if (existing) {
         return res.status(409).json({ message: 'Email already registered' });
@@ -42,6 +50,10 @@ export async function register(req, res) {
           role: user.role
         }
       });
+    }
+
+    if (preferDatabase) {
+      return res.status(503).json({ message: 'Database unavailable. Please try again shortly.' });
     }
 
     const existing = findDemoUserByEmail(safeEmail);
@@ -67,6 +79,10 @@ export async function register(req, res) {
       }
     });
   } catch (error) {
+    console.error('Registration error:', error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Invalid registration data' });
+    }
     return res.status(500).json({ message: 'Registration failed' });
   }
 }
@@ -79,9 +95,12 @@ export async function login(req, res) {
   }
 
   const safeEmail = email.toLowerCase();
+  const preferDatabase = Boolean(config.mongoUri);
 
   try {
-    if (isDatabaseConnected()) {
+    const dbReady = await ensureDatabaseConnection();
+
+    if (dbReady) {
       const user = await User.findOne({ email: safeEmail });
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
@@ -102,6 +121,10 @@ export async function login(req, res) {
           role: user.role
         }
       });
+    }
+
+    if (preferDatabase) {
+      return res.status(503).json({ message: 'Database unavailable. Please try again shortly.' });
     }
 
     const user = findDemoUserByEmail(safeEmail);

@@ -1,5 +1,7 @@
 import { Order } from '../models/Order.js';
-import { addDemoOrder, demoStore, isDatabaseConnected } from '../utils/demoStore.js';
+import { ensureDatabaseConnection } from '../config/db.js';
+import { config } from '../config/env.js';
+import { addDemoOrder, demoStore } from '../utils/demoStore.js';
 
 export async function createOrder(req, res) {
   const { items = [], shipping = 0, tax = 0 } = req.body;
@@ -10,9 +12,11 @@ export async function createOrder(req, res) {
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal + Number(shipping) + Number(tax);
+  const preferDatabase = Boolean(config.mongoUri);
 
   try {
-    if (isDatabaseConnected()) {
+    const dbReady = await ensureDatabaseConnection();
+    if (dbReady) {
       const order = await Order.create({
         user: req.user._id,
         items,
@@ -22,6 +26,10 @@ export async function createOrder(req, res) {
         total
       });
       return res.status(201).json(order);
+    }
+
+    if (preferDatabase) {
+      return res.status(503).json({ message: 'Database unavailable. Please try again shortly.' });
     }
 
     const order = addDemoOrder({
@@ -41,10 +49,16 @@ export async function createOrder(req, res) {
 }
 
 export async function getOrders(req, res) {
+  const preferDatabase = Boolean(config.mongoUri);
   try {
-    if (isDatabaseConnected()) {
+    const dbReady = await ensureDatabaseConnection();
+    if (dbReady) {
       const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
       return res.json(orders);
+    }
+
+    if (preferDatabase) {
+      return res.status(503).json({ message: 'Database unavailable. Please try again shortly.' });
     }
 
     const orders = demoStore.orders.filter((order) => order.user === req.user._id);
