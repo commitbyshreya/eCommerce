@@ -9,20 +9,9 @@ import { config } from './config/env.js';
 
 const app = express();
 
-const allowedOrigins = config.clientUrls;
-const allowAllOrigins = allowedOrigins.includes('*');
+const allowed = [config.clientUrl, /\.vercel\.app$/]; // allow previews too
+app.use(cors({ origin: allowed, credentials: true }));
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (allowAllOrigins || !origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'), false);
-    },
-    credentials: true
-  })
-);
 app.use(express.json());
 app.use(morgan('dev'));
 
