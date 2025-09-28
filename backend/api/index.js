@@ -1,7 +1,7 @@
 // backend/api/index.js
 import serverless from 'serverless-http';
-import app from '../app.js';
-import { connectDatabase } from '../config/db.js';
+import app from '../src/app.js';
+import { connectDatabase } from '../src/config/db.js';
 
 // Reuse DB connection across invocations (good for serverless)
 let dbReady;
