@@ -12,6 +12,17 @@ const hashedUsers = demoUsers.map((user, index) => ({
   updatedAt: now
 }));
 
+function normaliseOrderItem(item) {
+  if (!item) return item;
+  const quantityValue = Number(item.quantity ?? item.qty ?? 1);
+  return {
+    product: item.product ?? item.productId ?? null,
+    name: item.name ?? item.title ?? 'Item',
+    price: Number(item.price ?? 0),
+    quantity: Number.isFinite(quantityValue) && quantityValue > 0 ? quantityValue : 1
+  };
+}
+
 const demoState = {
   products: demoProducts.map((product, index) => ({
     ...product,
@@ -27,6 +38,7 @@ demoState.orders = demoOrders.map((order, index) => ({
   ...order,
   _id: `demo-order-${index + 1}`,
   user: demoState.users[0]._id,
+  items: order.items.map(normaliseOrderItem),
   createdAt: now,
   updatedAt: now
 }));
@@ -58,6 +70,8 @@ export function addDemoOrder(order) {
   const newOrder = {
     ...order,
     _id: `demo-order-${nextIndex}`,
+    status: order.status || 'pending',
+    items: (order.items || []).map(normaliseOrderItem),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };

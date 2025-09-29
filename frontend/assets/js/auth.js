@@ -46,7 +46,10 @@ async function handleLogin(event) {
 
   try {
     const response = await api.login(payload);
-    setSession(response.token, response.user);
+    if (!response?.user) {
+      throw new Error('Missing user profile');
+    }
+    setSession(response.user, response.token);
     setStatus(loginForm, 'Login successful! Redirecting...');
     setTimeout(() => {
       window.location.href = './index.html';
@@ -54,12 +57,12 @@ async function handleLogin(event) {
   } catch (error) {
     const allowedPassword = demoCredentials[payload.email];
     if (allowedPassword && allowedPassword === payload.password) {
-      setSession('demo-token', {
+      setSession({
         id: 'demo-user',
         name: payload.email.split('@')[0],
         email: payload.email,
         role: payload.email === 'ava@toolkart.com' ? 'admin' : 'customer'
-      });
+      }, 'demo-token', { demo: true });
       setStatus(loginForm, 'Logged in (demo mode). Redirecting...');
       setTimeout(() => {
         window.location.href = './index.html';
@@ -67,7 +70,7 @@ async function handleLogin(event) {
       return;
     }
 
-    setStatus(loginForm, 'Invalid credentials. Please try again.');
+    setStatus(loginForm, error.message || 'Invalid credentials. Please try again.');
   }
 }
 
@@ -78,18 +81,25 @@ async function handleRegister(event) {
 
   try {
     const response = await api.register(payload);
-    setSession(response.token, response.user);
+    if (!response?.user) {
+      throw new Error('Missing user profile');
+    }
+    setSession(response.user, response.token);
     setStatus(registerForm, 'Account created! Redirecting...');
     setTimeout(() => {
       window.location.href = './index.html';
     }, 900);
   } catch (error) {
-    setSession('demo-token', {
+    if (error?.message && error.message !== 'Request failed') {
+      setStatus(registerForm, error.message);
+      return;
+    }
+    setSession({
       id: 'demo-user',
       name: payload.name,
       email: payload.email,
       role: 'customer'
-    });
+    }, 'demo-token', { demo: true });
     setStatus(registerForm, 'Demo account ready! Redirecting...');
     setTimeout(() => {
       window.location.href = './index.html';

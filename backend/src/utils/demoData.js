@@ -100,14 +100,16 @@ export const demoOrders = [
     status: 'paid',
     items: [
       {
-        name: 'Cordless Drill',
+        productId: 'demo-product-1',
+        title: 'Cordless Drill',
         price: 89.99,
-        quantity: 1
+        qty: 1
       },
       {
-        name: 'Hammer',
+        productId: 'demo-product-3',
+        title: 'Hammer',
         price: 15.99,
-        quantity: 2
+        qty: 2
       }
     ]
   }

@@ -98,6 +98,11 @@ main {
   gap: 0.75rem;
 }
 
+[data-auth-slot] {
+  display: flex;
+  align-items: center;
+}
+
 .nav__search {
   position: relative;
   min-width: 220px;
@@ -136,6 +141,110 @@ main {
   cursor: pointer;
   transition: transform 0.2s ease;
   position: relative;
+}
+
+.nav__login {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.nav__login:hover,
+.nav__login:focus-visible {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.account-menu {
+  position: relative;
+}
+
+.account-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  padding: 0.4rem 0.9rem 0.4rem 0.45rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.account-menu__trigger:hover,
+.account-menu__trigger:focus-visible {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.account-menu__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.account-menu__name {
+  font-size: 0.95rem;
+}
+
+.account-menu__caret {
+  font-size: 0.7rem;
+  opacity: 0.65;
+}
+
+.account-menu__dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.65rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 190px;
+  padding: 0.55rem;
+  background: #fff;
+  color: #1c1d23;
+  border-radius: 0.85rem;
+  box-shadow: 0 16px 32px rgba(28, 29, 35, 0.14);
+  z-index: 30;
+}
+
+.account-menu__dropdown a,
+.account-menu__dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.account-menu__dropdown a:hover,
+.account-menu__dropdown button:hover {
+  background: rgba(28, 29, 35, 0.08);
+}
+
+.account-menu__dropdown button {
+  color: #d43c3c;
 }
 
 .icon-button:hover {
@@ -318,6 +427,33 @@ main {
   color: var(--red-700);
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
+}
+
+.badge--pill {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.badge--status-paid,
+.badge--status-completed {
+  background: rgba(76, 175, 80, 0.14);
+  color: #2f8f3b;
+}
+
+.badge--status-pending {
+  background: rgba(231, 184, 41, 0.18);
+  color: #a66c0a;
+}
+
+.badge--status-shipped {
+  background: rgba(33, 150, 243, 0.18);
+  color: #1c6fd8;
+}
+
+.badge--status-cancelled {
+  background: rgba(231, 76, 60, 0.18);
+  color: var(--red-700);
 }
 
 .deals-bar {
@@ -772,6 +908,343 @@ textarea {
   cursor: pointer;
 }
 
+.account-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.account-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.account-card__label {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+.account-card__name {
+  font-size: 1.75rem;
+  margin: 0.35rem 0;
+}
+
+.account-card__email {
+  color: var(--gray-600);
+}
+
+.account-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.account-card__status {
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.account-orders {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account-orders__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.account-orders__link {
+  font-weight: 600;
+  color: var(--red-700);
+}
+
+.account-orders__list {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-order-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 220px);
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: rgba(231, 76, 60, 0.06);
+}
+
+.account-order-card__label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-bottom: 0.35rem;
+}
+
+.account-order-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.account-order-card__total {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.account-order-card__link {
+  color: var(--red-700);
+  font-weight: 600;
+}
+
+.orders-layout {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.orders-header__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+.orders-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 1.25rem;
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.order-card__label {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-bottom: 0.35rem;
+}
+
+.order-card__status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.order-card__total {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.order-card__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.order-card__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.order-card__link {
+  font-weight: 600;
+  color: var(--red-700);
+}
+
+.order-detail {
+  display: grid;
+  gap: 2rem;
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.order-detail__back {
+  font-weight: 600;
+  color: var(--red-700);
+}
+
+.order-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.order-detail__label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+}
+
+.order-detail__status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.order-detail__total {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.order-detail__section {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-detail__items {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(231, 76, 60, 0.06);
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.order-item__total {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.order-detail__summary dl {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.order-detail__summary dl div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-detail__summary-total {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.order-detail__message {
+  font-weight: 500;
+}
+
+.order-detail--error {
+  border: 2px dashed rgba(231, 76, 60, 0.4);
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.checkout-summary {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.checkout-items {
+  display: grid;
+  gap: 1rem;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border-radius: 1.1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.checkout-item__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-end;
+  font-weight: 600;
+}
+
+.checkout-panel {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.checkout-panel dl {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.checkout-panel dl div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkout-panel__total {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.checkout-panel__status {
+  min-height: 1.25rem;
+}
+
 /* Utilities */
 
 .hidden {
@@ -780,6 +1253,14 @@ textarea {
 
 .text-muted {
   color: var(--gray-600);
+}
+
+.text-success {
+  color: #1f9254;
+}
+
+.text-error {
+  color: #d43c3c;
 }
 
 .text-center {
@@ -818,6 +1299,28 @@ textarea {
   .admin-sidebar {
     display: none;
   }
+
+  .account-layout,
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-order-card {
+    grid-template-columns: 1fr;
+  }
+
+  .account-order-card__meta,
+  .order-card__status,
+  .order-detail__status {
+    align-items: flex-start;
+  }
+
+  .order-card__header,
+  .order-detail__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -851,6 +1354,36 @@ textarea {
   .cart-item__price {
     justify-self: end;
   }
+
+  .account-card,
+  .account-orders,
+  .order-card,
+  .order-detail,
+  .checkout-panel {
+    padding: 1.5rem;
+  }
+
+  .account-card,
+  .account-orders__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .account-order-card__meta,
+  .order-card__status,
+  .order-detail__status,
+  .checkout-item__meta,
+  .order-item__total {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .checkout-item,
+  .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -873,5 +1406,23 @@ textarea {
 
   .auth-card {
     padding: 2rem 1.5rem;
+  }
+
+  .account-card,
+  .account-orders,
+  .order-card,
+  .order-detail,
+  .checkout-panel {
+    padding: 1.25rem;
+  }
+
+  .account-card__name {
+    font-size: 1.45rem;
+  }
+
+  .order-detail__header,
+  .order-card__header {
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

@@ -3,15 +3,26 @@ import { config } from '../config/env.js';
 import { User } from '../models/User.js';
 import { demoStore, isDatabaseConnected } from '../utils/demoStore.js';
 
-export async function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
+function extractToken(req) {
+  const cookieToken = req.cookies?.[config.session.cookieName];
+  if (cookieToken) return cookieToken;
 
-  if (!authHeader?.startsWith('Bearer ')) {
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+
+  return null;
+}
+
+export async function authenticate(req, res, next) {
+  const token = extractToken(req);
+
+  if (!token) {
     return res.status(401).json({ message: 'Authentication required' });
   }
 
   try {
-    const token = authHeader.split(' ')[1];
     const payload = jwt.verify(token, config.jwtSecret);
 
     if (isDatabaseConnected()) {

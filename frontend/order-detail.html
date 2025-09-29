@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToolKart | Quality Tools & Hardware</title>
+    <title>Order Details • ToolKart</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,60 +38,56 @@
             <div data-auth-slot></div>
           </div>
         </nav>
-        <section class="hero">
-          <div class="hero__content">
-            <span class="hero__badge">Premium power tools with flat 20% OFF</span>
-            <h1 class="hero__title">Build faster with ToolKart’s trusted hardware</h1>
-            <p>
-              Discover the latest power tools, safety gear, and accessories crafted for
-              professionals and DIY enthusiasts alike.
-            </p>
-            <div class="hero__cta">
-              <a class="btn btn--primary" href="./shop.html">Shop Now</a>
-              <a class="btn btn--ghost" href="./about.html">Learn More</a>
-            </div>
-          </div>
-          <div class="card card--soft">
-            <h3>Deals of the Week</h3>
-            <p>Combo kits and safety gear bundles now 15% off for members.</p>
-            <a class="btn" href="./login.html">Unlock Deals</a>
-          </div>
-        </section>
       </div>
     </header>
 
-    <main>
-      <section class="section">
-        <div class="container">
-          <div class="section__heading">
-            <h2 class="section__title">Shop by Category</h2>
-            <a class="text-muted" href="./shop.html">Browse all</a>
-          </div>
-          <div class="categories" data-category-grid></div>
-        </div>
-      </section>
+    <main class="section">
+      <div class="container order-detail" data-order-container>
+        <a class="order-detail__back" href="./orders.html">← Back to orders</a>
 
-      <section class="section">
-        <div class="container">
-          <div class="section__heading">
-            <h2 class="section__title">Featured Tools</h2>
-            <span class="badge">Top rated</span>
+        <header class="order-detail__header">
+          <div>
+            <p class="order-detail__label">Order</p>
+            <h1 data-order-number>#—</h1>
+            <p class="text-muted" data-order-date>—</p>
           </div>
-          <div class="product-grid" data-featured-grid></div>
-        </div>
-      </section>
+          <div class="order-detail__status">
+            <span class="badge badge--pill" data-order-status>—</span>
+            <p class="order-detail__total" data-order-total>$0.00</p>
+          </div>
+        </header>
 
-      <section class="section">
-        <div class="container">
-          <div class="deals-bar">
+        <section class="order-detail__section">
+          <h2>Items</h2>
+          <div class="order-detail__items" data-order-items>
+            <p class="text-muted">Loading items…</p>
+          </div>
+        </section>
+
+        <section class="order-detail__section order-detail__summary">
+          <h2>Summary</h2>
+          <dl>
             <div>
-              <strong>Deals of the Day</strong>
-              <p class="text-muted">Limited time discounts on pro kits and accessories.</p>
+              <dt>Subtotal</dt>
+              <dd data-order-subtotal>$0.00</dd>
             </div>
-            <a class="btn btn--primary" href="./shop.html">View Deals</a>
-          </div>
-        </div>
-      </section>
+            <div>
+              <dt>Shipping</dt>
+              <dd data-order-shipping>$0.00</dd>
+            </div>
+            <div>
+              <dt>Tax</dt>
+              <dd data-order-tax>$0.00</dd>
+            </div>
+            <div class="order-detail__summary-total">
+              <dt>Total</dt>
+              <dd data-order-summary-total>$0.00</dd>
+            </div>
+          </dl>
+        </section>
+
+        <p class="order-detail__message" data-order-message></p>
+      </div>
     </main>
 
     <footer class="footer">
@@ -102,7 +98,7 @@
               <span class="nav__brand-icon">🛠️</span>
               ToolKart
             </div>
-            <p>Your trusted partner for premium tools & hardware nationwide.</p>
+            <p>Need support with this order? Our team is ready to help.</p>
           </div>
           <div>
             <p class="footer__title">Quick Links</p>
@@ -110,32 +106,31 @@
               <li><a href="./shop.html">Shop</a></li>
               <li><a href="./about.html">About</a></li>
               <li><a href="./contact.html">Contact</a></li>
-              <li><a href="./admin.html">Admin Panel</a></li>
+              <li><a href="./account.html">My Account</a></li>
             </ul>
           </div>
           <div>
-            <p class="footer__title">Customer Service</p>
+            <p class="footer__title">Support</p>
             <ul class="footer__list">
-              <li><a href="#">Shipping & Delivery</a></li>
-              <li><a href="#">Returns & Exchanges</a></li>
-              <li><a href="#">Warranty</a></li>
               <li><a href="#">FAQs</a></li>
+              <li><a href="#">Shipping & Returns</a></li>
+              <li><a href="#">Privacy Policy</a></li>
             </ul>
           </div>
           <div>
             <p class="footer__title">Contact Info</p>
             <ul class="footer__list">
-              <li>1234 Main Street, Springfield, USA</li>
               <li>support@toolkart.com</li>
               <li>(123) 456-7890</li>
+              <li>Mon - Sat: 8am - 6pm</li>
             </ul>
           </div>
         </div>
-        <p class="footer__bottom">© ToolKart 2025. Crafted for the modern builder.</p>
+        <p class="footer__bottom">© ToolKart 2025. Secure order management.</p>
       </div>
     </footer>
 
     <script type="module" src="./assets/js/main.js"></script>
-    <script type="module" src="./assets/js/home.js"></script>
+    <script type="module" src="./assets/js/order-detail.js"></script>
   </body>
 </html>

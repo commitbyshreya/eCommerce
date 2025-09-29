@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToolKart | Quality Tools & Hardware</title>
+    <title>My Account • ToolKart</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,60 +38,32 @@
             <div data-auth-slot></div>
           </div>
         </nav>
-        <section class="hero">
-          <div class="hero__content">
-            <span class="hero__badge">Premium power tools with flat 20% OFF</span>
-            <h1 class="hero__title">Build faster with ToolKart’s trusted hardware</h1>
-            <p>
-              Discover the latest power tools, safety gear, and accessories crafted for
-              professionals and DIY enthusiasts alike.
-            </p>
-            <div class="hero__cta">
-              <a class="btn btn--primary" href="./shop.html">Shop Now</a>
-              <a class="btn btn--ghost" href="./about.html">Learn More</a>
-            </div>
-          </div>
-          <div class="card card--soft">
-            <h3>Deals of the Week</h3>
-            <p>Combo kits and safety gear bundles now 15% off for members.</p>
-            <a class="btn" href="./login.html">Unlock Deals</a>
-          </div>
-        </section>
       </div>
     </header>
 
-    <main>
-      <section class="section">
-        <div class="container">
-          <div class="section__heading">
-            <h2 class="section__title">Shop by Category</h2>
-            <a class="text-muted" href="./shop.html">Browse all</a>
+    <main class="section">
+      <div class="container account-layout">
+        <section class="account-card" data-account-card>
+          <div>
+            <p class="account-card__label">Signed in as</p>
+            <h1 class="account-card__name" data-account-name>—</h1>
+            <p class="account-card__email" data-account-email>—</p>
           </div>
-          <div class="categories" data-category-grid></div>
-        </div>
-      </section>
+          <div class="account-card__meta">
+            <span class="account-card__status" data-account-status>Loading account…</span>
+          </div>
+        </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="section__heading">
-            <h2 class="section__title">Featured Tools</h2>
-            <span class="badge">Top rated</span>
+        <section class="account-orders" data-account-orders-section>
+          <div class="account-orders__header">
+            <h2>Recent Orders</h2>
+            <a class="account-orders__link" href="./orders.html">View all orders →</a>
           </div>
-          <div class="product-grid" data-featured-grid></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="deals-bar">
-            <div>
-              <strong>Deals of the Day</strong>
-              <p class="text-muted">Limited time discounts on pro kits and accessories.</p>
-            </div>
-            <a class="btn btn--primary" href="./shop.html">View Deals</a>
+          <div class="account-orders__list" data-account-orders>
+            <p class="text-muted">Loading orders…</p>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
     <footer class="footer">
@@ -102,7 +74,7 @@
               <span class="nav__brand-icon">🛠️</span>
               ToolKart
             </div>
-            <p>Your trusted partner for premium tools & hardware nationwide.</p>
+            <p>Track your saved addresses and orders from this dashboard.</p>
           </div>
           <div>
             <p class="footer__title">Quick Links</p>
@@ -110,32 +82,31 @@
               <li><a href="./shop.html">Shop</a></li>
               <li><a href="./about.html">About</a></li>
               <li><a href="./contact.html">Contact</a></li>
-              <li><a href="./admin.html">Admin Panel</a></li>
+              <li><a href="./orders.html">My Orders</a></li>
             </ul>
           </div>
           <div>
-            <p class="footer__title">Customer Service</p>
+            <p class="footer__title">Support</p>
             <ul class="footer__list">
-              <li><a href="#">Shipping & Delivery</a></li>
-              <li><a href="#">Returns & Exchanges</a></li>
-              <li><a href="#">Warranty</a></li>
               <li><a href="#">FAQs</a></li>
+              <li><a href="#">Account Help</a></li>
+              <li><a href="#">Privacy Policy</a></li>
             </ul>
           </div>
           <div>
             <p class="footer__title">Contact Info</p>
             <ul class="footer__list">
-              <li>1234 Main Street, Springfield, USA</li>
               <li>support@toolkart.com</li>
               <li>(123) 456-7890</li>
+              <li>Mon - Sat: 8am - 6pm</li>
             </ul>
           </div>
         </div>
-        <p class="footer__bottom">© ToolKart 2025. Crafted for the modern builder.</p>
+        <p class="footer__bottom">© ToolKart 2025. All rights reserved.</p>
       </div>
     </footer>
 
     <script type="module" src="./assets/js/main.js"></script>
-    <script type="module" src="./assets/js/home.js"></script>
+    <script type="module" src="./assets/js/account.js"></script>
   </body>
 </html>

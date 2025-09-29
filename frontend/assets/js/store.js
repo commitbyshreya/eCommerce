@@ -1,6 +1,6 @@
 const CART_KEY = 'toolkart_cart';
-const TOKEN_KEY = 'toolkart_token';
 const USER_KEY = 'toolkart_user';
+const TOKEN_KEY = 'toolkart_token';
 
 export function getCart() {
   try {
@@ -46,18 +46,45 @@ export function clearCart() {
   localStorage.removeItem(CART_KEY);
 }
 
-export function setSession(token, user) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+export function setSession(user, token = null, options = {}) {
+  if (!user) {
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('toolkart:session-changed', { detail: { user: null } }));
+    }
+    return null;
+  }
+  const record = { ...user };
+  if (options.demo) {
+    record.demo = true;
+  }
+  localStorage.setItem(USER_KEY, JSON.stringify(record));
+  if (token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  } else if (!options.demo) {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('toolkart:session-changed', { detail: { user: record } }));
+  }
+  return record;
 }
 
 export function getSession() {
-  const token = localStorage.getItem(TOKEN_KEY);
   const user = JSON.parse(localStorage.getItem(USER_KEY) || 'null');
-  return { token, user };
+  const token = localStorage.getItem(TOKEN_KEY);
+  return {
+    token,
+    user,
+    isDemo: Boolean(user?.demo)
+  };
 }
 
 export function signOut() {
-  localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('toolkart:session-changed', { detail: { user: null } }));
+  }
 }

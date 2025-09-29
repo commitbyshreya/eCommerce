@@ -1,20 +1,28 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import checkoutRoutes from './routes/checkoutRoutes.js';
 import { config } from './config/env.js';
+import { authenticate } from './middleware/auth.js';
+import { me } from './controllers/authController.js';
 
 const app = express();
 
-const allowedOrigins = [...config.clientUrls, /\.vercel\.app$/];
+app.set('trust proxy', 1);
+
+const allowedOrigins = config.allowAllClients
+  ? []
+  : [...config.clientUrls, /\.vercel\.app$/];
 
 app.use(cors({
   origin(origin, callback) {
     // allow same-origin / server-to-server / tools
-    if (!origin) return callback(null, true);
+    if (!origin || config.allowAllClients) return callback(null, true);
 
     const ok = allowedOrigins.some((allowed) =>
       allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
@@ -26,15 +34,19 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan('dev'));
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', message: 'ToolKart API is running' });
 });
 
+app.get('/api/me', authenticate, me);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/checkout', checkoutRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {

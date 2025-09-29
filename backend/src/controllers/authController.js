@@ -16,6 +16,50 @@ function createToken(user) {
   });
 }
 
+function formatUser(user) {
+  if (!user) return null;
+  const id = typeof user._id === 'object' && user._id !== null && 'toString' in user._id
+    ? user._id.toString()
+    : user._id || user.id;
+  return {
+    id,
+    name: user.name,
+    email: user.email,
+    role: user.role
+  };
+}
+
+function setSessionCookie(res, token) {
+  const options = {
+    httpOnly: true,
+    secure: config.session.secure,
+    sameSite: config.session.sameSite,
+    maxAge: config.session.maxAge,
+    path: '/'
+  };
+
+  if (config.session.domain) {
+    options.domain = config.session.domain;
+  }
+
+  res.cookie(config.session.cookieName, token, options);
+}
+
+function clearSessionCookie(res) {
+  const options = {
+    httpOnly: true,
+    secure: config.session.secure,
+    sameSite: config.session.sameSite,
+    path: '/'
+  };
+
+  if (config.session.domain) {
+    options.domain = config.session.domain;
+  }
+
+  res.clearCookie(config.session.cookieName, options);
+}
+
 export async function register(req, res) {
   const { name, email, password } = req.body;
 
@@ -41,15 +85,8 @@ export async function register(req, res) {
 
       const user = await User.create({ name, email: safeEmail, password });
       const token = createToken(user);
-      return res.status(201).json({
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
+      setSessionCookie(res, token);
+      return res.status(201).json({ token, user: formatUser(user) });
     }
 
     if (preferDatabase) {
@@ -69,15 +106,8 @@ export async function register(req, res) {
     });
 
     const token = createToken(user);
-    return res.status(201).json({
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
-    });
+    setSessionCookie(res, token);
+    return res.status(201).json({ token, user: formatUser(user) });
   } catch (error) {
     console.error('Registration error:', error);
     if (error.name === 'ValidationError') {
@@ -112,15 +142,8 @@ export async function login(req, res) {
       }
 
       const token = createToken(user);
-      return res.json({
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
+      setSessionCookie(res, token);
+      return res.json({ token, user: formatUser(user) });
     }
 
     if (preferDatabase) {
@@ -138,27 +161,15 @@ export async function login(req, res) {
     }
 
     const token = createToken(user);
-    return res.json({
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
-    });
+    setSessionCookie(res, token);
+    return res.json({ token, user: formatUser(user) });
   } catch (error) {
     return res.status(500).json({ message: 'Login failed' });
   }
 }
 
 export async function profile(req, res) {
-  return res.json({
-    id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    role: req.user.role
-  });
+  return res.json(formatUser(req.user));
 }
 
 export function listDemoUsers(req, res) {
@@ -166,4 +177,13 @@ export function listDemoUsers(req, res) {
     return res.json(demoStore.users.map(({ password, ...rest }) => rest));
   }
   return res.status(403).json({ message: 'Demo users endpoint available only offline' });
+}
+
+export function me(req, res) {
+  return res.json(formatUser(req.user));
+}
+
+export function logout(_req, res) {
+  clearSessionCookie(res);
+  return res.status(204).send();
 }

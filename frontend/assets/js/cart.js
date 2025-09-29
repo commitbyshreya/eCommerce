@@ -1,11 +1,9 @@
 import {
   getCart,
   updateCartQuantity,
-  removeCartItem,
-  clearCart,
-  getSession
+  removeCartItem
 } from './store.js';
-import { api } from './api.js';
+import { ensureSession } from './session.js';
 import { updateCartIndicator } from './main.js';
 
 const itemsContainer = document.querySelector('[data-cart-items]');
@@ -99,31 +97,19 @@ async function handleCheckout() {
     return;
   }
 
-  const { token } = getSession();
-  if (!token) {
-    statusMessage.textContent = 'Please log in to complete checkout.';
-    return;
-  }
-
-  const summary = calculateSummary(cart);
-
   try {
-    await api.createOrder({
-      items: cart.map((item) => ({
-        product: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity
-      })),
-      shipping: summary.shipping,
-      tax: summary.tax
-    });
-    statusMessage.textContent = 'Order placed successfully!';
-    clearCart();
-    updateCartIndicator();
-    renderCart();
+    const session = await ensureSession({ forceRefresh: true });
+    if (!session.user) {
+      statusMessage.textContent = 'Please log in to continue to checkout.';
+      setTimeout(() => {
+        window.location.href = './login.html';
+      }, 600);
+      return;
+    }
+    statusMessage.textContent = 'Redirecting to checkout…';
+    window.location.href = './checkout.html';
   } catch (error) {
-    statusMessage.textContent = 'Checkout failed. Please try again later.';
+    statusMessage.textContent = 'Unable to start checkout. Please try again.';
   }
 }
 

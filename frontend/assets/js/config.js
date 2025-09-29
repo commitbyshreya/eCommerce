@@ -1,4 +1,4 @@
-const FALLBACK_LOCAL = 'http://localhost:3000/api';
+const FALLBACK_LOCAL = 'http://localhost:3001/api';
 const HOSTED_DEFAULT = 'https://e-commerce-ivory-psi.vercel.app/api';
 function resolveDefault() {
   const { origin, hostname } = window.location;

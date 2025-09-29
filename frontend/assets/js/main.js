@@ -1,5 +1,8 @@
 import { setApiBaseUrl } from './config.js';
-import { getCart } from './store.js';
+import { api } from './api.js';
+import { getCart, getSession, setSession, signOut } from './store.js';
+
+let teardownAccountMenu = null;
 
 function highlightActiveLink() {
   const navLinks = document.querySelectorAll('[data-nav-link]');
@@ -23,6 +26,129 @@ function updateCartIndicator() {
   indicator.textContent = totalItems > 0 ? totalItems : '0';
 }
 
+function renderAuthState(user) {
+  const slot = document.querySelector('[data-auth-slot]');
+  if (!slot) return;
+
+  if (typeof teardownAccountMenu === 'function') {
+    teardownAccountMenu();
+    teardownAccountMenu = null;
+  }
+
+  if (!user) {
+    slot.innerHTML = `
+      <a class="nav__login" href="./login.html" data-auth-login>Login / Signup</a>
+    `;
+    return;
+  }
+
+  const displayName = user.name || user.email || 'Account';
+  const initials = (displayName.charAt(0) || '?').toUpperCase();
+
+  slot.innerHTML = `
+    <div class="account-menu" data-account-menu>
+      <button type="button" class="account-menu__trigger" data-account-trigger>
+        <span class="account-menu__avatar" aria-hidden="true">${initials}</span>
+        <span class="account-menu__name">${displayName}</span>
+        <span class="account-menu__caret" aria-hidden="true">▾</span>
+      </button>
+      <div class="account-menu__dropdown hidden" data-account-dropdown>
+        <a href="./account.html" data-account-link>My Account</a>
+        <a href="./orders.html" data-account-link>My Orders</a>
+        <a href="./cart.html" data-account-link>My Cart</a>
+        <button type="button" data-account-logout>Logout</button>
+      </div>
+    </div>
+  `;
+
+  teardownAccountMenu = setupAccountMenu(slot);
+}
+
+function setupAccountMenu(container) {
+  const trigger = container.querySelector('[data-account-trigger]');
+  const dropdown = container.querySelector('[data-account-dropdown]');
+  const logoutButton = container.querySelector('[data-account-logout]');
+
+  if (!trigger || !dropdown) {
+    return null;
+  }
+
+  let isOpen = false;
+
+  function toggleMenu(force) {
+    const nextState = typeof force === 'boolean' ? force : !isOpen;
+    isOpen = nextState;
+    dropdown.classList.toggle('hidden', !isOpen);
+    trigger.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  function handleTrigger(event) {
+    event.preventDefault();
+    toggleMenu();
+  }
+
+  function handleDocumentClick(event) {
+    if (!container.contains(event.target)) {
+      toggleMenu(false);
+    }
+  }
+
+  function handleKeydown(event) {
+    if (event.key === 'Escape') {
+      toggleMenu(false);
+    }
+  }
+
+  async function handleLogout(event) {
+    event.preventDefault();
+    toggleMenu(false);
+    try {
+      await api.logout();
+    } catch (error) {
+      // noop – even if the API call fails we still clear the local session
+    }
+    signOut();
+    window.location.href = './login.html';
+  }
+
+  trigger.setAttribute('aria-haspopup', 'true');
+  trigger.setAttribute('aria-expanded', 'false');
+
+  trigger.addEventListener('click', handleTrigger);
+  document.addEventListener('click', handleDocumentClick);
+  document.addEventListener('keydown', handleKeydown);
+  logoutButton?.addEventListener('click', handleLogout);
+
+  return () => {
+    trigger.removeEventListener('click', handleTrigger);
+    document.removeEventListener('click', handleDocumentClick);
+    document.removeEventListener('keydown', handleKeydown);
+    logoutButton?.removeEventListener('click', handleLogout);
+  };
+}
+
+async function hydrateSessionFromServer() {
+  const { user, isDemo, token } = getSession();
+  renderAuthState(user);
+
+  if (isDemo) {
+    return;
+  }
+
+  try {
+    const profile = await api.getMe();
+    if (profile?.id) {
+      setSession(profile, token, { demo: isDemo });
+    } else if (user) {
+      signOut();
+    }
+  } catch (_error) {
+    if (user) {
+      signOut();
+    }
+  }
+}
+
 function handleApiSwitchForm() {
   const form = document.querySelector('[data-api-form]');
   if (!form) return;
@@ -42,11 +168,19 @@ function handleApiSwitchForm() {
 highlightActiveLink();
 updateCartIndicator();
 handleApiSwitchForm();
+hydrateSessionFromServer();
 
 window.addEventListener('storage', (event) => {
   if (event.key === 'toolkart_cart') {
     updateCartIndicator();
+  } else if (event.key === 'toolkart_user') {
+    const { user } = getSession();
+    renderAuthState(user);
   }
+});
+
+window.addEventListener('toolkart:session-changed', (event) => {
+  renderAuthState(event.detail?.user ?? null);
 });
 
 export { updateCartIndicator };
