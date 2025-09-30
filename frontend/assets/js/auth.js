@@ -9,8 +9,18 @@ const registerForm = document.querySelector('[data-register-form]');
 
 const demoCredentials = {
   'ava@toolkart.com': 'password123',
-  'noah@example.com': 'password123'
+  'noah@example.com': 'password123',
+  'admin@toolkart.com': 'Admin@123'
 };
+
+function redirectAfterLogin(user) {
+  if (!user) {
+    window.location.href = './index.html';
+    return;
+  }
+  const destination = user.role === 'admin' ? './admin.html' : './index.html';
+  window.location.href = destination;
+}
 
 function setStatus(form, message) {
   const status = form.querySelector('[data-auth-status]');
@@ -52,20 +62,23 @@ async function handleLogin(event) {
     setSession(response.user, response.token);
     setStatus(loginForm, 'Login successful! Redirecting...');
     setTimeout(() => {
-      window.location.href = './index.html';
+      redirectAfterLogin(response.user);
     }, 900);
   } catch (error) {
-    const allowedPassword = demoCredentials[payload.email];
+    const safeEmail = payload.email.toLowerCase();
+    const allowedPassword = demoCredentials[safeEmail];
     if (allowedPassword && allowedPassword === payload.password) {
-      setSession({
+      const adminEmails = ['ava@toolkart.com', 'admin@toolkart.com'];
+      const demoUser = {
         id: 'demo-user',
-        name: payload.email.split('@')[0],
+        name: safeEmail.split('@')[0],
         email: payload.email,
-        role: payload.email === 'ava@toolkart.com' ? 'admin' : 'customer'
-      }, 'demo-token', { demo: true });
+        role: adminEmails.includes(safeEmail) ? 'admin' : 'customer'
+      };
+      setSession(demoUser, 'demo-token', { demo: true });
       setStatus(loginForm, 'Logged in (demo mode). Redirecting...');
       setTimeout(() => {
-        window.location.href = './index.html';
+        redirectAfterLogin(demoUser);
       }, 900);
       return;
     }

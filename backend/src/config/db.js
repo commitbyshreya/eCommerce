@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { config } from './env.js';
+import { ensureAdminUser } from '../utils/adminSeeder.js';
 
 const MONGO_FALLBACK = 'mongodb://127.0.0.1:27017/toolkart';
 
@@ -11,6 +12,7 @@ export async function connectDatabase() {
       serverSelectionTimeoutMS: 5000
     });
     console.log(`MongoDB connected at ${uri}`);
+    await ensureAdminUser();
   } catch (error) {
     console.warn('MongoDB connection failed, continuing in demo mode.');
     console.warn(error.message);
@@ -38,6 +40,7 @@ export async function ensureDatabaseConnection() {
       serverSelectionTimeoutMS: 5000
     });
     console.log('MongoDB reconnected on demand');
+    await ensureAdminUser();
     return true;
   } catch (error) {
     console.warn('MongoDB reconnection failed');

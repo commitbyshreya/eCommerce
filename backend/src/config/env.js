@@ -37,6 +37,10 @@ if (allowAllClients && process.env.NODE_ENV !== 'production' && !process.env.SES
   sessionCookieSameSite = 'lax';
 }
 
+const adminEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+const adminPassword = (process.env.ADMIN_PASSWORD || '').trim();
+const adminName = (process.env.ADMIN_NAME || '').trim() || 'Administrator';
+
 export const config = {
   port: process.env.PORT || 3000,
   mongoUri: process.env.MONGO_URI || '',
@@ -50,5 +54,10 @@ export const config = {
     secure: sessionCookieSecure,
     sameSite: sessionCookieSameSite,
     maxAge: Number.isFinite(sessionCookieMaxAge) ? sessionCookieMaxAge : 7 * 24 * 60 * 60 * 1000
+  },
+  adminAccount: {
+    email: adminEmail,
+    password: adminPassword,
+    name: adminName
   }
 };

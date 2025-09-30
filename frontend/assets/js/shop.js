@@ -2,6 +2,16 @@ import { api } from './api.js';
 import { demoProducts } from './demoData.js';
 import { addToCart } from './store.js';
 import { updateCartIndicator } from './main.js';
+import { resolveMediaUrl } from './media.js';
+
+function toSlug(value = '') {
+  return value
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
 const state = {
   page: 1,
@@ -16,6 +26,12 @@ const state = {
   inStockOnly: false,
   pagination: { pages: 1, total: demoProducts.length }
 };
+
+const urlParams = new URLSearchParams(window.location?.search || '');
+const initialCategory = urlParams.get('category');
+if (initialCategory) {
+  state.category = toSlug(initialCategory);
+}
 
 const grid = document.querySelector('[data-shop-grid]');
 const paginationEl = document.querySelector('[data-pagination]');
@@ -41,9 +57,15 @@ const sortLookup = {
 
 function templateProduct(product) {
   const rating = Math.round(product.rating || 0);
+  const rawImage = (Array.isArray(product.images) && product.images.length ? product.images[0] : product.image) || '';
+  const image = resolveMediaUrl(rawImage);
+  const icon = product.icon || '🛠️';
+  const imageMarkup = image
+    ? `<div class="product-card__image"><img src="${image}" alt="${product.name}" loading="lazy" /></div>`
+    : `<div class="product-card__image">${icon}</div>`;
   return `
     <article class="product-card" data-product-id="${product._id || product.id}">
-      <div class="product-card__image">${product.icon || '🛠️'}</div>
+      ${imageMarkup}
       <div>
         <h3>${product.name}</h3>
         <p class="text-muted">${'★'.repeat(rating)}${'☆'.repeat(Math.max(0, 5 - rating))}</p>
@@ -66,6 +88,14 @@ function renderProducts(products) {
   grid.innerHTML = products.map(templateProduct).join('');
 }
 
+function normaliseProductItem(product) {
+  return {
+    ...product,
+    categorySlug: product.categorySlug || toSlug(product.category || ''),
+    image: resolveMediaUrl((Array.isArray(product.images) && product.images.length ? product.images[0] : product.image) || '')
+  };
+}
+
 function renderPagination(pagination) {
   if (!paginationEl) return;
   const { pages, page } = pagination;
@@ -83,18 +113,35 @@ function renderPagination(pagination) {
 
 function renderFilters(filters) {
   if (filters.categories?.length && categoryList) {
-    categoryList.innerHTML = filters.categories
-      .map(
-        (category) => `
-          <label>
-            <input type="radio" name="category" value="${category}" ${
-              state.category === category ? 'checked' : ''
-            } />
-            ${category}
-          </label>
-        `
-      )
-      .join('');
+    const categories = filters.categories.map((entry) => {
+      if (typeof entry === 'string') {
+        return { name: entry, slug: toSlug(entry) };
+      }
+      return {
+        name: entry.name || entry.label || 'Category',
+        slug: entry.slug || toSlug(entry.name || entry.label || ''),
+        productCount: entry.productCount || 0
+      };
+    });
+
+    const markup = [
+      `
+        <label>
+          <input type="radio" name="category" value="" ${state.category ? '' : 'checked'} />
+          All
+        </label>
+      `,
+      ...categories.map((category) => `
+        <label>
+          <input type="radio" name="category" value="${category.slug}" ${
+            state.category === category.slug ? 'checked' : ''
+          } />
+          ${category.name}${category.productCount ? ` <span class="text-muted">(${category.productCount})</span>` : ''}
+        </label>
+      `)
+    ];
+
+    categoryList.innerHTML = markup.join('');
   }
 
   if (filters.brands?.length && brandList) {
@@ -117,7 +164,10 @@ function applyDemoFilters() {
   let products = [...demoProducts];
 
   if (state.category) {
-    products = products.filter((product) => product.category === state.category);
+    products = products.filter((product) => {
+      const slug = product.categorySlug || toSlug(product.category);
+      return slug === state.category;
+    });
   }
 
   if (state.brand) {
@@ -156,7 +206,13 @@ function applyDemoFilters() {
   const pages = Math.ceil(products.length / state.limit) || 1;
   state.pagination.pages = pages;
   const start = (state.page - 1) * state.limit;
-  const slice = products.slice(start, start + state.limit);
+  const slice = products
+    .slice(start, start + state.limit)
+    .map((product) => ({
+      ...product,
+      image: resolveMediaUrl(product.image || product.images?.[0]),
+      categorySlug: product.categorySlug || toSlug(product.category)
+    }));
 
   return { products: slice, pagination: { page: state.page, pages, total: products.length } };
 }
@@ -176,14 +232,39 @@ async function loadProducts() {
 
     const { data, pagination } = await api.getProducts(params);
     usingDemo = false;
-    renderProducts(data);
-    renderPagination(pagination);
-    if (totalEl) totalEl.textContent = pagination.total;
-    state.pagination = pagination;
+    let items = data.map(normaliseProductItem);
+    let pageInfo = { ...pagination };
+
+    if (state.category && !items.length) {
+      try {
+        const fallbackRequest = { ...params, page: 1, limit: 200 };
+        delete fallbackRequest.category;
+        const fallbackResponse = await api.getProducts(fallbackRequest);
+        const fallbackItems = fallbackResponse.data
+          .map(normaliseProductItem)
+          .filter((product) => product.categorySlug === state.category);
+
+        if (fallbackItems.length) {
+          const total = fallbackItems.length;
+          const pages = Math.ceil(total / state.limit) || 1;
+          pageInfo = { total, pages, page: Math.min(state.page, pages) };
+          const start = (pageInfo.page - 1) * state.limit;
+          items = fallbackItems.slice(start, start + state.limit);
+          state.page = pageInfo.page;
+        }
+      } catch (_fallbackError) {
+        // ignore – we'll drop through to demo fallback
+      }
+    }
+
+    renderProducts(items);
+    renderPagination(pageInfo);
+    if (totalEl) totalEl.textContent = pageInfo.total;
+    state.pagination = pageInfo;
   } catch (error) {
     usingDemo = true;
     const { products, pagination } = applyDemoFilters();
-    renderProducts(products);
+    renderProducts(products.map(normaliseProductItem));
     renderPagination(pagination);
     if (totalEl) totalEl.textContent = pagination.total;
   }
@@ -195,7 +276,10 @@ async function loadFilters() {
     usingDemo = false;
     renderFilters(filters);
   } catch (error) {
-    const categories = [...new Set(demoProducts.map((product) => product.category))];
+    const categories = [...new Set(demoProducts.map((product) => product.category))].map((name) => ({
+      name,
+      slug: toSlug(name)
+    }));
     const brands = [...new Set(demoProducts.map((product) => product.brand))];
     renderFilters({ categories, brands });
   }

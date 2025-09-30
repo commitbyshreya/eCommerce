@@ -4,6 +4,56 @@ import { getCart, getSession, setSession, signOut } from './store.js';
 
 let teardownAccountMenu = null;
 
+const PUBLIC_PAGES = new Set([
+  '',
+  'index.html',
+  'shop.html',
+  'about.html',
+  'contact.html',
+  'orders.html',
+  'order-detail.html',
+  'account.html',
+  'cart.html',
+  'checkout.html'
+]);
+const ADMIN_PAGES = new Set(['admin.html']);
+const AUTH_PAGES = new Set(['login.html']);
+
+function getPageName() {
+  const path = window.location.pathname;
+  const page = path.split('/').pop();
+  if (!page || page === '') return 'index.html';
+  return page;
+}
+
+function updatePublicNavigationVisibility(user) {
+  const navs = document.querySelectorAll('[data-public-nav]');
+  const shouldHide = user?.role === 'admin';
+  navs.forEach((nav) => {
+    nav.classList.toggle('hidden', shouldHide);
+  });
+}
+
+function enforceRouteGuards(user) {
+  const page = getPageName();
+
+  if (user?.role === 'admin') {
+    if (PUBLIC_PAGES.has(page) || AUTH_PAGES.has(page)) {
+      if (page !== 'admin.html') {
+        window.location.href = './admin.html';
+      }
+      return;
+    }
+  } else if (ADMIN_PAGES.has(page)) {
+    window.location.href = './login.html';
+    return;
+  }
+
+  if (!user && ADMIN_PAGES.has(page)) {
+    window.location.href = './login.html';
+  }
+}
+
 function highlightActiveLink() {
   const navLinks = document.querySelectorAll('[data-nav-link]');
   const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -28,6 +78,8 @@ function updateCartIndicator() {
 
 function renderAuthState(user) {
   const slot = document.querySelector('[data-auth-slot]');
+  updatePublicNavigationVisibility(user);
+  enforceRouteGuards(user);
   if (!slot) return;
 
   if (typeof teardownAccountMenu === 'function') {

@@ -13,3 +13,9 @@ Static HTML/CSS/JS implementation of the ToolKart storefront and admin panel.
 Open the HTML files with a static server (recommended) or via your IDE’s live preview. The scripts expect an API at `http://localhost:3000/api` by default. Set `window.TOOLKART_API_URL` before loading scripts or run `localStorage.setItem('toolkart_api_url', '<your api>')` in the console to point to a hosted backend.
 
 Without a backend the UI falls back to bundled demo data so every page still renders.
+
+### Role-aware behaviour
+
+- Admin sessions automatically redirect to `/admin` and the public navigation hides.
+- Customer sessions cannot access `/admin`; unauthenticated visitors are sent to `/login`.
+- The admin console surfaces file inputs for category/product images – these require the backend to be running with write access to `/uploads`.

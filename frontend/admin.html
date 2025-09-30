@@ -14,28 +14,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   </head>
   <body>
-    <header class="header">
+    <header class="header header--admin">
       <div class="container">
-        <nav class="nav">
-          <a class="nav__brand" href="./index.html">
+        <nav class="nav nav--admin">
+          <a class="nav__brand" href="#dashboard">
             <span class="nav__brand-icon">🛠️</span>
-            ToolKart
+            Admin Console
           </a>
-          <ul class="nav__links">
-            <li><a data-nav-link href="./index.html">Home</a></li>
-            <li><a data-nav-link href="./shop.html">Shop</a></li>
-            <li><a data-nav-link href="./about.html">About</a></li>
-            <li><a data-nav-link href="./contact.html">Contact</a></li>
+          <ul class="nav__links nav__links--admin">
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#orders">Orders</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#analytics">Analytics</a></li>
           </ul>
           <div class="nav__actions">
-            <div class="nav__search">
-              <input type="search" placeholder="Search admin" />
-              <span class="nav__search-icon">🔍</span>
-            </div>
-            <a class="icon-button" href="./cart.html">
-              🛒
-              <span class="badge" data-cart-count>0</span>
-            </a>
+            <a class="btn btn--ghost" href="./index.html">View Store</a>
             <div data-auth-slot></div>
           </div>
         </nav>
@@ -43,80 +37,221 @@
     </header>
 
     <main class="admin-layout">
-      <aside class="admin-sidebar">
-        <div class="admin-sidebar__brand">
-          <span class="nav__brand-icon">🛠️</span>
-          Shopkeeper Panel
-        </div>
-        <nav class="admin-nav">
-          <a href="#" class="active">Dashboard</a>
-          <a href="#">Profile</a>
-          <a href="#">Products</a>
-          <a href="#">Orders</a>
-          <a href="#">Customers</a>
-          <a href="#">Payments</a>
-          <a href="#">Settings</a>
-          <a href="./login.html">Logout</a>
-        </nav>
-      </aside>
-
       <section class="admin-content">
-        <header>
+        <nav class="admin-subnav">
+          <a class="admin-subnav__link" href="#dashboard">Summary</a>
+          <a class="admin-subnav__link" href="#orders">Recent Orders</a>
+          <a class="admin-subnav__link" href="#categories">Manage Categories</a>
+          <a class="admin-subnav__link" href="#products">Manage Products</a>
+          <a class="admin-subnav__link" href="#analytics">Sales Insights</a>
+        </nav>
+
+        <header id="dashboard">
           <h1>Dashboard</h1>
           <p class="text-muted">Welcome back, Shopkeeper. Here’s what’s happening today.</p>
         </header>
 
         <div class="dashboard-cards" data-dashboard-cards>
-          <article class="dashboard-card">
+          <article class="dashboard-card" data-metric="totalSales">
             <span>Total Sales</span>
-            <span class="dashboard-card__value">$0</span>
+            <span class="dashboard-card__value" data-metric-value>$0</span>
           </article>
-          <article class="dashboard-card">
+          <article class="dashboard-card" data-metric="ordersToday">
             <span>Orders Today</span>
-            <span class="dashboard-card__value">0</span>
+            <span class="dashboard-card__value" data-metric-value>0</span>
           </article>
-          <article class="dashboard-card">
+          <article class="dashboard-card" data-metric="pendingOrders">
             <span>Pending Orders</span>
-            <span class="dashboard-card__value">0</span>
+            <span class="dashboard-card__value" data-metric-value>0</span>
           </article>
-          <article class="dashboard-card">
+          <article class="dashboard-card" data-metric="stockAlerts">
             <span>Stock Alerts</span>
-            <span class="dashboard-card__value">0</span>
+            <span class="dashboard-card__value" data-metric-value>0</span>
           </article>
         </div>
 
-        <div class="chart-card">
-          <h2>Sales Trends</h2>
-          <canvas id="salesChart" height="220"></canvas>
+        <div class="metric-pills" data-dashboard-metrics>
+          <div class="metric-pill" data-metric="totalOrders">
+            <span>Total Orders</span>
+            <strong data-metric-value>0</strong>
+          </div>
+          <div class="metric-pill" data-metric="averageOrderValue">
+            <span>Average Order Value</span>
+            <strong data-metric-value>$0</strong>
+          </div>
         </div>
 
-        <section class="card">
+        <section class="card" id="orders">
           <header class="section__heading">
             <div>
-              <h2 class="section__title">Products Management</h2>
-              <p class="text-muted">Quick actions on your top catalogue items.</p>
+              <h2 class="section__title">Recent Orders</h2>
+              <p class="text-muted">Latest purchases with customer and status details.</p>
             </div>
-            <button class="btn btn--primary" data-add-product>Add New Product</button>
           </header>
-          <div class="nav__search" style="max-width: 280px; margin-bottom: 1rem;">
-            <input type="search" placeholder="Search products" data-product-search />
-            <span class="nav__search-icon">🔍</span>
-          </div>
           <div class="table-wrapper">
-            <table class="table" data-products-table>
+            <table class="table" data-orders-table>
               <thead>
                 <tr>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Stock</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th>Placed</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr><td colspan="5">Loading orders...</td></tr>
+              </tbody>
             </table>
           </div>
         </section>
+
+        <section class="card" id="categories">
+          <header class="section__heading">
+            <div>
+              <h2 class="section__title">Category Management</h2>
+              <p class="text-muted">Create and monitor catalog categories.</p>
+            </div>
+          </header>
+          <div class="management-grid">
+            <form class="admin-form" data-category-form>
+              <div class="form-grid">
+                <label>
+                  <span>Name</span>
+                  <input type="text" placeholder="e.g. Power Tools" required data-category-name />
+                </label>
+                <label>
+                  <span>Slug (optional)</span>
+                  <input type="text" placeholder="power-tools" data-category-slug />
+                </label>
+                <label class="form-grid__wide">
+                  <span>Description</span>
+                  <textarea placeholder="Short description" rows="2" data-category-description></textarea>
+                </label>
+                <label>
+                  <span>Icon (optional)</span>
+                  <input type="text" placeholder="Emoji or icon" data-category-icon />
+                </label>
+                <label>
+                  <span>Image</span>
+                  <input type="file" accept="image/*" data-category-image />
+                </label>
+              </div>
+              <div class="form-previews">
+                <div class="preview-thumb" data-category-preview>
+                  <span class="preview-thumb__placeholder">No image yet</span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-category-submit>Add Category</button>
+                <span class="form-status" data-category-status></span>
+              </div>
+            </form>
+            <div class="table-wrapper">
+              <table class="table" data-categories-table>
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Products</th>
+                    <th>Low Stock</th>
+                    <th>Avg. Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="5">No categories found yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" data-product-section id="products">
+          <header class="section__heading">
+            <div>
+              <h2 class="section__title">Products Management</h2>
+              <p class="text-muted">Add new catalog items and keep inventory in sync.</p>
+            </div>
+          </header>
+          <div class="management-grid">
+            <form class="admin-form" data-product-form>
+              <div class="form-grid">
+                <label>
+                  <span>Name</span>
+                  <input type="text" placeholder="Product name" required data-product-name />
+                </label>
+                <label>
+                  <span>Price</span>
+                  <input type="number" min="0" step="0.01" placeholder="0.00" required data-product-price />
+                </label>
+                <label>
+                  <span>Category</span>
+                  <select required data-product-category>
+                    <option value="">Select category</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Stock</span>
+                  <input type="number" min="0" step="1" placeholder="0" required data-product-stock />
+                </label>
+                <label class="form-grid__wide">
+                  <span>Description</span>
+                  <textarea placeholder="Short product description" rows="3" data-product-description></textarea>
+                </label>
+                <label>
+                  <span>Image</span>
+                  <input type="file" accept="image/*" data-product-image />
+                </label>
+                <label>
+                  <span>Rating</span>
+                  <input type="number" min="0" max="5" step="0.1" placeholder="4.5" data-product-rating />
+                </label>
+              </div>
+              <div class="form-previews">
+                <div class="preview-thumb" data-product-preview>
+                  <span class="preview-thumb__placeholder">No image yet</span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <label class="checkbox">
+                  <input type="checkbox" data-product-featured />
+                  <span>Mark as featured</span>
+                </label>
+                <button class="btn btn--primary" type="submit" data-product-submit>Add Product</button>
+                <span class="form-status" data-product-status></span>
+              </div>
+            </form>
+            <div class="table-wrapper">
+              <table class="table" data-products-table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="6">No products to display.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <div class="chart-card" id="analytics">
+          <div class="chart-card__header">
+            <h2>Sales Insights</h2>
+            <div class="chart-toggle" data-chart-range>
+              <button class="btn btn--ghost active" data-range="weekly">Weekly</button>
+              <button class="btn btn--ghost" data-range="monthly">Monthly</button>
+              <button class="btn btn--ghost" data-range="quarterly">Quarterly</button>
+            </div>
+          </div>
+          <canvas id="salesChart" height="220"></canvas>
+        </div>
       </section>
     </main>
 

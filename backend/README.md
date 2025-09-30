@@ -29,8 +29,20 @@ The API listens on `http://localhost:3000` by default. When MongoDB is unavailab
 - `GET /api/products/:id`
 - `GET /api/products/featured`
 - `GET /api/products/filters`
+- `POST /api/products` (admin, multipart form with optional `image` file)
+- `PUT /api/products/:id` (admin, multipart form with optional `image` file)
+- `DELETE /api/products/:id` (admin)
 - `POST /api/orders` (auth required)
 - `GET /api/orders` (auth required)
+- `GET /api/categories`
+- `POST /api/categories` (admin, multipart form with optional `image` file)
+- `PUT /api/categories/:id` (admin, multipart form with optional `image` file)
+- `DELETE /api/categories/:id` (admin)
 - `GET /api/admin/dashboard` (admin token required)
 
 The `/api/admin/dashboard` payload supports the admin UI cards and charts.
+
+### File uploads
+
+- Uploaded images are stored under `<repo>/uploads` and exposed at `http://localhost:3000/uploads/<filename>`.
+- The directory is created automatically at runtime; ensure the process has write permissions.

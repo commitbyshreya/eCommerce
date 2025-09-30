@@ -52,13 +52,38 @@ export const api = {
   getMe: () => request('/me'),
   getProfile: () => request('/auth/profile'),
   getProducts: (params = {}) => {
-    const searchParams = new URLSearchParams(params);
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      const stringValue = String(value).trim();
+      if (!stringValue) return;
+      searchParams.append(key, stringValue);
+    });
     const query = searchParams.toString();
     return request(query ? `/products?${query}` : '/products');
   },
   getProduct: (id) => request(`/products/${id}`),
   getFilters: () => request('/products/filters'),
   getFeatured: () => request('/products/featured'),
+  getCategories: () => request('/categories'),
+  createCategory: (payload) => request('/categories', {
+    method: 'POST',
+    body: payload instanceof FormData ? payload : JSON.stringify(payload)
+  }),
+  updateCategory: (id, payload) => request(`/categories/${id}`, {
+    method: 'PUT',
+    body: payload instanceof FormData ? payload : JSON.stringify(payload)
+  }),
+  deleteCategory: (id) => request(`/categories/${id}`, { method: 'DELETE' }),
+  createProduct: (payload) => request('/products', {
+    method: 'POST',
+    body: payload instanceof FormData ? payload : JSON.stringify(payload)
+  }),
+  updateProduct: (id, payload) => request(`/products/${id}`, {
+    method: 'PUT',
+    body: payload instanceof FormData ? payload : JSON.stringify(payload)
+  }),
+  deleteProduct: (id) => request(`/products/${id}`, { method: 'DELETE' }),
   createOrder: (payload) => request('/orders', { method: 'POST', body: JSON.stringify(payload) }),
   getOrder: (id) => request(`/orders/${id}`),
   simulateCheckout: (payload) => request('/checkout/simulate', {
